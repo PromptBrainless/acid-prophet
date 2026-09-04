@@ -5,6 +5,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
 from app import config, db, energy, genres
+from app.bot_voting_handlers import upvote, downvote, moreenergy, lessenergy, community
 
 logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
@@ -135,6 +136,7 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "/genre +1 | /genre -1 – Genre navigieren\n"
         "/upvote /downvote – Track bewerten\n"
         "/moreenergy /lessenergy – Energy-Druck\n"
+        "/community – Community Snapshot\n"
         "/help – Diese Hilfe"
     )
     await update.message.reply_text(text, parse_mode="Markdown")
@@ -167,6 +169,7 @@ def main() -> None:
     app.add_handler(CommandHandler("downvote", downvote))
     app.add_handler(CommandHandler("moreenergy", moreenergy))
     app.add_handler(CommandHandler("lessenergy", lessenergy))
+    app.add_handler(CommandHandler("community", community))
     app.add_handler(CommandHandler("help", help_cmd))
 
     log.info("Acid Prophet starting (no secrets logged)")
