@@ -22,7 +22,17 @@ Telegram-voting Psytrance stream bot with Energy 1–10 engine, genre hierarchy,
 | Voting (`/upvote`, `/downvote`, `/moreenergy`, `/lessenergy`) | 🔜 Phase 4 |
 | Track Intelligence (mixxx-analyzer) | 🔜 Phase 5 |
 | YouTube Live overlay (ffplayout API) | 🔜 Phase 6 |
-| YouTube stream (pending stream key) | ⏳ Waiting |
+|| YouTube stream (pending stream key) | ⏳ Waiting |
+
+---
+
+## Visual Identity
+
+![Energy Engine 1–10](docs/assets/energy-engine.jpg)
+![Feature Diagram](docs/assets/feature-diagram.jpg)
+![How It Works](docs/assets/how-it-works.jpg)
+![Poster](docs/assets/poster-neon.jpg)
+![Logo](docs/assets/logo-circuit.jpg)
 
 ---
 
