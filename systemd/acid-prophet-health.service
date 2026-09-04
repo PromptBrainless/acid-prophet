@@ -1,0 +1,6 @@
+[Unit]
+Description=Health check Acid Prophet
+
+[Service]
+Type=oneshot
+ExecStart=/srv/dj-stream/scripts/bot-health.sh

@@ -1,0 +1,9 @@
+[Unit]
+Description=Acid Prophet learning collect+analyze
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/srv/dj-stream
+ExecStart=/srv/dj-stream/scripts/learning-loop.sh

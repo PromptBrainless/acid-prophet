@@ -1,0 +1,10 @@
+.env
+*.env
+__pycache__/
+*.pyc
+logs/
+reports/runtime-*
+data/*.db
+backups/
+*.tar.gz
+.DS_Store
