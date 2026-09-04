@@ -1,0 +1,27 @@
+{
+  "energy": 7,
+  "genre": "psytrance",
+  "genre_display": "Psytrance",
+  "mood": "intensiv / treibend",
+  "label": "Trance / Melodic Techno",
+  "color": "#E76F51",
+  "bpm_range": "138–150",
+  "track": {
+    "title": null,
+    "artist": null,
+    "bpm": null,
+    "key": null,
+    "camelot": null,
+    "energy": 7
+  },
+  "community": {
+    "total_votes": 0,
+    "up": 0,
+    "down": 0,
+    "more_energy": 0,
+    "less_energy": 0,
+    "energy_pressure": 0.0,
+    "track_score": 0.5
+  },
+  "updated_at": "2026-09-04T02:27:45.692677+00:00"
+}

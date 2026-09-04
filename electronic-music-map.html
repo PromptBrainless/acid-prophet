@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electronic Music Map</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  .poster {
+    max-width: 3840px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+    border: 2px solid #333;
+    border-radius: 12px;
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .poster::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(100, 100, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 100, 100, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .header h1 {
+    font-size: 72px;
+    font-weight: 900;
+    letter-spacing: 8px;
+    background: linear-gradient(90deg, #00d4ff, #ff00ff, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  
+  .header .subtitle {
+    font-size: 24px;
+    color: #888;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+  
+  .axes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px 0 20px 0;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .y-axis {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 20px;
+  }
+  
+  .y-axis .label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-size: 18px;
+    font-weight: bold;
+    color: #aaa;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  
+  .y-axis .mood-scale {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .y-axis .mood-scale span {
+    padding: 4px 12px;
+    border-left: 3px solid;
+    background: rgba(255,255,255,0.02);
+  }
+  
+  .x-axis {
+    flex: 1;
+    margin-left: 40px;
+  }
+  
+  .x-axis .label {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #aaa;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  
+  .x-axis .bpm-scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #666;
+    padding: 0 10px;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(180px, auto);
+    gap: 12px;
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .genre-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+  }
+  
+  .genre-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--genre-color);
+  }
+  
+  .genre-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    border-color: var(--genre-color);
+  }
+  
+  .genre-card .genre-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  
+  .genre-card .genre-meta {
+    font-size: 13px;
+    color: #aaa;
+    line-height: 1.5;
+  }
+  
+  .genre-card .genre-meta strong {
+    color: var(--genre-color);
+    font-weight: 600;
+  }
+  
+  .genre-card .genre-origin {
+    font-size: 11px;
+    color: #666;
+    margin-top: 6px;
+    font-style: italic;
+  }
+  
+  .legend {
+    margin-top: 40px;
+    padding: 20px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    z-index: 1;
+  }
+  
+  .legend h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #888;
+  }
+  
+  .legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  
+  .footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 12px;
+    color: #555;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Print styles for DIN A1 */
+  @media print {
+    body { background: white; padding: 0; }
+    .poster {
+      max-width: none;
+      width: 100%;
+      height: 100vh;
+      border: none;
+      border-radius: 0;
+      page-break-inside: avoid;
+    }
+    .genre-card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="header">
+    <h1>Electronic Music Map</h1>
+    <div class="subtitle">BPM • Energy • Mood</div>
+  </div>
+  
+  <div class="axes">
+    <div class="y-axis">
+      <div class="label">Stimmung</div>
+      <div class="mood-scale">
+        <span style="border-color: #1e90ff; color: #1e90ff;">Ruhig ↑</span>
+        <span style="border-color: #00bfff; color: #00bfff;">Verträumt</span>
+        <span style="border-color: #32cd32; color: #32cd32;">Groovig</span>
+        <span style="border-color: #ffd700; color: #ffd700;">Positiv</span>
+        <span style="border-color: #ff8c00; color: #ff8c00;">Euphorisch</span>
+        <span style="border-color: #ff4500; color: #ff4500;">Intensiv</span>
+        <span style="border-color: #ff00ff; color: #ff00ff;">Psychedelisch</span>
+        <span style="border-color: #9400d3; color: #9400d3;">Futuristisch</span>
+        <span style="border-color: #fff; color: #fff;">↓ Aggressiv</span>
+      </div>
+    </div>
+    <div class="x-axis">
+      <div class="label">BPM Achse 60 → 200</div>
+      <div class="bpm-scale">
+        <span>60</span><span>80</span><span>100</span><span>120</span><span>140</span><span>160</span><span>180</span><span>200</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="grid" id="genreGrid"></div>
+  
+  <div class="legend">
+    <h3>Farbsystem</h3>
+    <div class="legend-items">
+      <div class="legend-item"><div class="legend-color" style="background:#1e90ff;"></div>Blau = ruhig</div>
+      <div class="legend-item"><div class="legend-color" style="background:#00bfff;"></div>Türkis = verträumt</div>
+      <div class="legend-item"><div class="legend-color" style="background:#32cd32;"></div>Grün = groovig</div>
+      <div class="legend-item"><div class="legend-color" style="background:#ffd700;"></div>Gelb = positiv</div>
+      <div class="legend-item"><div class="legend-color" style="background:#ff8c00;"></div>Orange = euphorisch</div>
+      <div class="legend-item"><div class="legend-color" style="background:#ff4500;"></div>Rot = intensiv</div>
+      <div class="legend-item"><div class="legend-color" style="background:#ff00ff;"></div>Magenta = psychedelisch</div>
+      <div class="legend-item"><div class="legend-color" style="background:#9400d3;"></div>Violett = futuristisch</div>
+      <div class="legend-item"><div class="legend-color" style="background:#fff;"></div>Weiß = maximale Energie</div>
+    </div>
+  </div>
+  
+  <div class="footer">
+    The Crowd Controls The AI DJ · Electronic Music Map · 2026
+  </div>
+</div>
+
+<script>
+const genres = [
+  // Atmosphärisch
+  { name: "Ambient", bpm: "60–90", energy: 1, mood: "meditativ, atmosphärisch", origin: "1970er", color: "#1e90ff", features: "Flächen, Soundscapes, kaum Schlagzeug", row: 1 },
+  { name: "Drone", bpm: "60–90", energy: 1, mood: "meditativ, spirituell", origin: "1990er", color: "#1e90ff", features: "anhaltende Töne, Obertöne", row: 1 },
+  { name: "Chillout", bpm: "90–110", energy: 2, mood: "entspannt, verträumt", origin: "1990er", color: "#00bfff", features: "gemischte Elemente, weiche Beats", row: 2 },
+  { name: "Downtempo", bpm: "80–110", energy: 2, mood: "entspannt, verträumt", origin: "1990er", color: "#00bfff", features: "langsame Beats, entspannend", row: 2 },
+  
+  // House
+  { name: "Deep House", bpm: "118–124", energy: 4, mood: "warm, entspannt, groovig", origin: "1980er Chicago", color: "#32cd32", features: "tiefe Bässe, Soul-Einflüsse", row: 4 },
+  { name: "Organic House", bpm: "120–126", energy: 4, mood: "natürlich, warm", origin: "2010er", color: "#32cd32", features: "akustische Elemente, Natur-Samples", row: 4 },
+  { name: "Afro House", bpm: "116–122", energy: 5, mood: "rhythmisch, tanzbar", origin: "2010er", color: "#32cd32", features: "afrikanische Rhythmen, Percussion", row: 4 },
+  { name: "House", bpm: "118–128", energy: 5, mood: "klassisch, groovig", origin: "1980er Chicago", color: "#32cd32", features: "4/4 Beat, Bassdrum", row: 5 },
+  { name: "Progressive House", bpm: "122–130", energy: 6, mood: "aufbauend, euphorisch", origin: "1990er", color: "#ffd700", features: "progressive Strukturen, lange Intros", row: 5 },
+  { name: "Tech House", bpm: "122–128", energy: 6, mood: "minimalistisch, tanzbar", origin: "1990er", color: "#ffd700", features: "Techno + House, reduzierte Elemente", row: 5 },
+  { name: "Melodic House", bpm: "120–128", energy: 5, mood: "melodisch, emotional", origin: "2010er", color: "#32cd32", features: "Melodien im Vordergrund", row: 5 },
+  
+  // Techno
+  { name: "Detroit Techno", bpm: "130–140", energy: 7, mood: "futuristisch, mechanisch", origin: "1980er Detroit", color: "#ff4500", features: "repetitive Patterns, futuristisch", row: 6 },
+  { name: "Minimal Techno", bpm: "128–135", energy: 6, mood: "minimalistisch, hypnotisch", origin: "1990er", color: "#ff8c00", features: "weniger Elemente, Reduktion", row: 6 },
+  { name: "Techno", bpm: "130–145", energy: 8, mood: "hypnotisch, mechanisch", origin: "Detroit", color: "#ff4500", features: "repetitiv, treibend", row: 6 },
+  { name: "Melodic Techno", bpm: "122–130", energy: 6, mood: "melodisch, tief", origin: "2010er", color: "#ff8c00", features: "Melodien + Beats", row: 6 },
+  { name: "Hard Techno", bpm: "140–160", energy: 9, mood: "aggressiv, dunkel", origin: "1990er", color: "#ff4500", features: "harte Kickdrums, düster", row: 7 },
+  { name: "Schranz", bpm: "140–150", energy: 9, mood: "düster, kompressiv", origin: "1990er", color: "#ff4500", features: "minimal, hart, komprimiert", row: 7 },
+  
+  // Trance
+  { name: "Progressive Trance", bpm: "130–140", energy: 7, mood: "aufbauend, atmosphärisch", origin: "1990er", color: "#ff8c00", features: "lange Intros, progressive Strukturen", row: 6 },
+  { name: "Trance", bpm: "138–142", energy: 8, mood: "euphorisch, melodisch", origin: "1990er", color: "#ff4500", features: "uplifting Melodien, große Breakdowns", row: 6 },
+  { name: "Uplifting Trance", bpm: "140–148", energy: 9, mood: "euphorisch, episch", origin: "1990er", color: "#ff4500", features: "sehr große Breakdowns, emotional", row: 7 },
+  
+  // Psy
+  { name: "Goa Trance", bpm: "135–145", energy: 8, mood: "psychedelisch, spirituell", origin: "1990er Goa", color: "#ff00ff", features: "melodische Psytrance, orientalisch", row: 7 },
+  { name: "Psytrance", bpm: "138–150", energy: 9, mood: "psychedelisch, spirituell", origin: "1990er", color: "#ff00ff", features: "komplexe Synths, schnelle Basslines", row: 7 },
+  { name: "Full-On", bpm: "140–148", energy: 9, mood: "euphorisch, positiv", origin: "2000er", color: "#ff00ff", features: "zugängliche Psytrance, catchy", row: 7 },
+  { name: "Darkpsy", bpm: "140–150", energy: 9, mood: "düster, intensiv", origin: "2000er", color: "#ff00ff", features: "dunkle Atmosphäre, komplex", row: 7 },
+  { name: "Hi-Tech", bpm: "150–170", energy: 10, mood: "futuristisch, komplex", origin: "2000er", color: "#9400d3", features: "schnelle Breakbeats, neurotisch", row: 8 },
+  
+  // Bass Music
+  { name: "Dubstep", bpm: "140", energy: 8, mood: "düster, droppend", origin: "2000er UK", color: "#ff4500", features: "Wobble-Bass, Drops", row: 7 },
+  { name: "Future Bass", bpm: "140–150", energy: 7, mood: "melodisch, emotional", origin: "2010er", color: "#ff8c00", features: "schöne Melodien, weiche Sounds", row: 7 },
+  { name: "Trap", bpm: "140", energy: 7, mood: "dunkel, aggressiv", origin: "2010er", color: "#ff4500", features: "808 Bässe, Hi-Hats", row: 7 },
+  { name: "Drum & Bass", bpm: "160–180", energy: 10, mood: "intensiv, futuristisch", origin: "1990er UK", color: "#fff", features: "Breakbeats, Subbass", row: 9 },
+  { name: "Neurofunk", bpm: "170–180", energy: 10, mood: "komplex, dunkel", origin: "2000er", color: "#9400d3", features: "neurotische Synths, technoid", row: 9 },
+  
+  // Hard Dance
+  { name: "Hardstyle", bpm: "150", energy: 9, mood: "euphorisch, hart", origin: "1990er NL", color: "#ff00ff", features: "Reverse-Bass, große Kicks", row: 8 },
+  { name: "Rawstyle", bpm: "150", energy: 9, mood: "roh, aggressiv", origin: "2000er", color: "#ff00ff", features: "härterer Bass, düster", row: 8 },
+  { name: "Hardcore", bpm: "160–200", energy: 10, mood: "extrem, aggressiv", origin: "1990er", color: "#fff", features: "sehr schnelle Beats, extrem", row: 9 },
+  { name: "Frenchcore", bpm: "160–200", energy: 10, mood: "wild, verrückt", origin: "1990er FR", color: "#fff", features: "hohe Energie, fröhlich-aggressiv", row: 9 },
+];
+
+const grid = document.getElementById('genreGrid');
+genres.forEach(g => {
+  const card = document.createElement('div');
+  card.className = 'genre-card';
+  card.style.setProperty('--genre-color', g.color);
+  card.style.gridColumn = 'span 3';
+  card.style.gridRow = g.row;
+  card.innerHTML = `
+    <div class="genre-name">${g.name}</div>
+    <div class="genre-meta">
+      <strong>BPM:</strong> ${g.bpm}<br>
+      <strong>Energie:</strong> ${g.energy}/10<br>
+      <strong>Stimmung:</strong> ${g.mood}<br>
+      <strong>Entstanden:</strong> ${g.origin}
+    </div>
+    <div class="genre-origin">${g.features}</div>
+  `;
+  grid.appendChild(card);
+});
+</script>
+</body>
+</html>

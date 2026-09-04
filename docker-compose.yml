@@ -1,0 +1,24 @@
+services:
+  icecast:
+    image: pltnk/icecast2:latest
+    container_name: dj-icecast
+    ports:
+      - "8000:8000"
+    volumes:
+      - /srv/dj-stream/icecast-config:/etc/icecast2:ro
+    restart: always
+    environment:
+      - ICECAST_ADMIN_PASSWORD=admin
+      - ICECAST_SOURCE_PASSWORD=source_password
+      - ICECAST_RELAY_PASSWORD=relay_password
+
+  liquidsoap:
+    image: savonet/liquidsoap:1a246cc
+    container_name: dj-liquidsoap
+    volumes:
+      - /srv/dj-stream/tracks:/tracks:ro
+      - /srv/dj-stream/liquidsoap.liq:/script.liq:ro
+    depends_on:
+      - icecast
+    restart: always
+    command: ["liquidsoap", "/script.liq"]

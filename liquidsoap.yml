@@ -1,0 +1,13 @@
+services:
+  liquidsoap:
+    image: savonet/liquidsoap:latest
+    container_name: dj-liquidsoap
+    volumes:
+      - /srv/dj-stream/tracks:/tracks:ro
+      - /srv/dj-stream/liquidsoap.liq:/script.liq:ro
+    ports:
+      - "8000:8000"
+    environment:
+      - LIQUIDSOAP_SCRIPT=/script.liq
+    restart: always
+    network_mode: bridge

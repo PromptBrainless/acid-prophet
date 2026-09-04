@@ -8,3 +8,11 @@ data/*.db
 backups/
 *.tar.gz
 .DS_Store
+
+# Sensitive / runtime
+.bot_token
+chat_id.txt
+current_energy.json
+data/*.db-journal
+icecast_server.py.bak
+acid-prophet-improvements/

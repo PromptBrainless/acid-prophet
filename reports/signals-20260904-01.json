@@ -1,0 +1,25 @@
+{
+  "ts": "2026-09-04T01:01:37.681387+00:00",
+  "votes": [],
+  "errors": [],
+  "health": [
+    "2026-09-04T00:52:55Z FAIL service=acid-prophet.service",
+    "2026-09-04T00:52:55Z UNRECOVERED service=acid-prophet.service",
+    "2026-09-04T00:53:55Z FAIL service=acid-prophet.service",
+    "2026-09-04T00:53:55Z UNRECOVERED service=acid-prophet.service",
+    "2026-09-04T00:54:58Z FAIL service=acid-prophet.service",
+    "2026-09-04T00:54:58Z UNRECOVERED service=acid-prophet.service",
+    "2026-09-04T00:56:01Z FAIL service=acid-prophet.service",
+    "2026-09-04T00:56:01Z UNRECOVERED service=acid-prophet.service",
+    "2026-09-04T00:57:04Z FAIL service=acid-prophet.service",
+    "2026-09-04T00:57:04Z UNRECOVERED service=acid-prophet.service",
+    "2026-09-04T00:58:08Z FAIL service=acid-prophet.service",
+    "2026-09-04T00:58:08Z UNRECOVERED service=acid-prophet.service",
+    "2026-09-04T00:59:12Z FAIL service=acid-prophet.service",
+    "2026-09-04T00:59:12Z UNRECOVERED service=acid-prophet.service",
+    "2026-09-04T01:00:17Z FAIL service=acid-prophet.service",
+    "2026-09-04T01:00:17Z UNRECOVERED service=acid-prophet.service",
+    "2026-09-04T01:01:23Z FAIL service=acid-prophet.service",
+    "2026-09-04T01:01:23Z UNRECOVERED service=acid-prophet.service"
+  ]
+}

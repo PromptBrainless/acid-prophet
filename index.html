@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KI-DJ Techno Stream</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #0f0f1e;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.player {
+  background: #1a1a2e;
+  border: 2px solid #333;
+  border-radius: 20px;
+  padding: 40px 30px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+h1 {
+  background: linear-gradient(90deg, #00d4ff, #ff00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+.status {
+  color: #aaa;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+audio {
+  width: 100%;
+  margin: 20px 0;
+}
+.track-info {
+  background: #16213e;
+  border: 1px solid #00d4ff;
+  border-radius: 12px;
+  padding: 15px;
+  margin-top: 20px;
+}
+.track-info strong {
+  color: #00d4ff;
+  display: block;
+  margin-bottom: 5px;
+}
+.instructions {
+  margin-top: 30px;
+  padding: 15px;
+  background: #16213e;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #ccc;
+  line-height: 1.6;
+}
+.instructions strong {
+  color: #ff00ff;
+}
+</style>
+</head>
+<body>
+<div class="player">
+  <h1>🎧 KI-DJ Techno Stream</h1>
+  <p class="status">Live • MP3 320kbps • Echtzeit</p>
+
+  <audio id="player" controls>
+    <source src="http://100.69.81.38:8000/stream" type="audio/mpeg">
+  </audio>
+
+  <div class="track-info" id="trackInfo">
+    <strong>🎵 Track</strong>
+    <span id="trackName">Play drücken zum Starten</span>
+  </div>
+
+  <div class="instructions">
+    <strong>📱 Tipp für Handy/Chrome:</strong><br>
+    • <strong>Play</strong> drücken — Autoplay ist oft blockiert<br>
+    • Falls nichts kommt: 5–10 Sekunden warten, dann nochmal Play<br>
+    • Hintergrund abspielen: in den Einstellungen erlauben<br>
+    • Bei Problemen: VLC Media Player → Netzwerkstream → URL eingeben
+  </div>
+</div>
+
+<script>
+const player = document.getElementById('player');
+const trackName = document.getElementById('trackName');
+
+player.addEventListener('playing', () => {
+  trackName.textContent = '✓ Stream läuft';
+});
+player.addEventListener('waiting', () => {
+  trackName.textContent = 'Puffer...';
+});
+player.addEventListener('error', (e) => {
+  trackName.textContent = 'Fehler: ' + (e.target.error?.message || 'Unbekannt');
+});
+player.addEventListener('stalled', () => {
+  trackName.textContent = 'Puffer...';
+});
+</script>
+</body>
+</html>

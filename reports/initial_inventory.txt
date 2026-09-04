@@ -1,0 +1,91 @@
+=== PROJECT ROOT ===
+/srv/dj-stream
+
+=== TREE (maxdepth 2) ===
+./backups/prechange-20260904T002425Z.tar.gz
+./bot-health.sh
+./.bot_token
+./chat_id.txt
+./current_energy.json
+./dj_controller.py
+./dj-youtube-stream.sh
+./docker-compose.yml
+./download_loop.sh
+./electronic-music-map.html
+./genres.json
+./icecast_server.py
+./index.html
+./liquidsoap.liq
+./liquidsoap.yml
+./logs/bot-decisions.json
+./logs/download.log
+./logs/download_loop.log
+./logs/icecast.log
+./logs/monitor.log
+./logs/storage_lru.log
+./MASTER_EXECUTION.md
+./PROJEKT.md
+./__pycache__/icecast_server.cpython-311.pyc
+./__pycache__/telegram_bot.cpython-311.pyc
+./__pycache__/telegram_bot.cpython-314.pyc
+./queue.txt
+./reports/initial_inventory.txt
+./run_bot.sh
+./storage_lru.sh
+./stream_monitor.sh
+./telegram_bot.py
+./test_write.txt
+./youtube-background.jpg
+
+=== SERVICES ===
+
+=== PROCESSES ===
+root        1319  0.0  0.1  46960 27608 ?        Ss   Aug31   2:30 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root        1551  0.0  0.1 126100 28884 ?        Ssl  Aug31   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+jesus       5287  0.4  1.3 1506252 219420 tty1   Sl+  Aug31  22:31 /home/jesus/.hermes/hermes-agent/venv/bin/python /home/jesus/.hermes/hermes-agent/hermes
+root      514083  0.1  0.3  68524 55872 ?        Ss   Sep03   0:33 python server.py
+root      515096  0.1  0.3  63300 51772 ?        Ss   Sep03   0:32 python -m uvicorn app:app --host 127.0.0.1 --port 8787
+root      515187  0.1  0.2  54972 46356 ?        Ss   Sep03   0:32 python -m uvicorn app:app --host 127.0.0.1 --port 8788
+jesus     522593  0.0  0.2  64980 43876 ?        SNl  Sep03   0:15 Plex Plug-in [com.plexapp.system] /usr/lib/plexmediaserver/Resources/Plug-ins-cb3ebc72d/Framework.bundle/Contents/Resources/Versions/2/Python/bootstrap.py --server-version 1.43.3.10896-cb3ebc72d /usr/lib/plexmediaserver/Resources/Plug-ins-cb3ebc72d/System.bundle
+jesus     531116  0.0  0.2 424128 39620 ?        Sl   Sep03   0:03 /opt/venv/bin/python3 /opt/venv/bin/unoserver --interface 127.0.0.1 --port 2003 --uno-port 2004 --user-installation /home/stirlingpdfuser/.libreoffice_uno_1000/instance_2003 --conversion-timeout 1800
+jesus     583147  0.1  1.1 377860 179404 ?       Ssl  Sep03   0:25 python3 manage.py document_consumer
+jesus     584117  0.0  0.1  22632 18072 ?        S    Sep03   0:00 /usr/local/bin/python -B -Wignore:::django.http.response:517 -c from multiprocessing.resource_tracker import main;main(7)
+jesus    1076322  0.0  0.0   8748  5456 ?        Ss   Sep03   0:00 /bin/bash -lic set +m; cd /srv/dj-stream && python3 icecast_server.py
+jesus    1076346  2.5  0.1 401800 19288 ?        Sl   Sep03   3:31 python3 icecast_server.py
+jesus    1218281  2.5  2.0 1946132 322440 ?      Ssl  Sep03   2:42 /home/jesus/.hermes/hermes-agent/venv/bin/python -m hermes_cli.main gateway run
+jesus    1387594  0.0  0.3 260092 56820 pts/0    S+   Sep03   0:00 ffmpeg -re -loop 1 -i /srv/dj-stream/youtube-background.jpg -i http://localhost:8000/stream -vf scale=1920:1080 -c:v libx264 -preset veryfast -b:v 3000k -maxrate 3500k -bufsize 6000k -pix_fmt yuv420p -g 60 -keyint_min 60 -c:a aac -b:a 192k -ar 44100 -f flv rtmp://a.rtmp.youtube.com/live2/STREAM_KEY
+jesus    1720544  0.0  0.1  38556 29128 ?        Ss   00:25   0:00 /usr/bin/python3 /srv/dj-stream/telegram_bot.py
+jesus    1795799 54.5  0.2 253352 43720 ?        R    00:39   0:00 ffmpeg -re -i /srv/data/dj-tracks/Progressive Psytrance mix April 2026.mp3 -i /srv/data/dj-tracks/Progressive Psytrance mix August 2025.mp3 -af loudnorm=I=-16:TP=-1.5:LRA=11,acrossfade=d=5:c1=tri:c2=tri -f mp3 -codec:a libmp3lame -b:a 320k -ar 44100 -ac 2 -flush_packets 1 pipe:1
+jesus    1795823 80.0  0.1 252732 19364 ?        R    00:39   0:00 ffmpeg -re -i /srv/data/dj-tracks/Progressive Psytrance mix July 2026.mp3 -i /srv/data/dj-tracks/Progressive to Full-On Psytrance Mix (June 2025) - Eclipse Sound Syndicate!.mp3 -af loudnorm=I=-16:TP=-1.5:LRA=11,acrossfade=d=5:c1=tri:c2=tri -f mp3 -codec:a libmp3lame -b:a 320k -ar 44100 -ac 2 -flush_packets 1 pipe:1
+jesus    1795824 75.0  0.1 252732 17328 ?        R    00:39   0:00 ffmpeg -re -i /srv/data/dj-tracks/Progressive to Full-On Psytrance Mix (June 2025) - Eclipse Sound Syndicate!.mp3 -i /srv/data/dj-tracks/Progressive to Full-On Psytrance Mix (March 2025) - Eclipse Sound Syndicate!.mp3 -af loudnorm=I=-16:TP=-1.5:LRA=11,acrossfade=d=5:c1=tri:c2=tri -f mp3 -codec:a libmp3lame -b:a 320k -ar 44100 -ac 2 -flush_packets 1 pipe:1
+jesus    1795828  133  0.1 252732 24708 ?        R    00:39   0:00 ffmpeg -re -i /srv/data/dj-tracks/Progressive to Full-On Psytrance Mix (March 2025) - Eclipse Sound Syndicate!.mp3 -i /srv/data/dj-tracks/Robin Mind - Mindset #005 (Full On PsyTrance Mix).mp3 -af loudnorm=I=-16:TP=-1.5:LRA=11,acrossfade=d=5:c1=tri:c2=tri -f mp3 -codec:a libmp3lame -b:a 320k -ar 44100 -ac 2 -flush_packets 1 pipe:1
+root     2179703  0.0  0.1 458076 30444 ?        Ssl  Sep02   2:06 /usr/bin/python3 /usr/bin/fail2ban-server -xf start
+
+=== DISK ===
+Filesystem                            Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg--1-ubuntu--lv   98G   56G   38G  60% /
+/dev/mapper/ubuntu--vg--1-ubuntu--lv   98G   56G   38G  60% /
+
+=== PYTHON ===
+Python 3.11.16
+
+=== FFMPEG ===
+ffmpeg version 8.0.1-3ubuntu2 Copyright (c) 2000-2025 the FFmpeg developers
+built with gcc 15 (Ubuntu 15.2.0-13ubuntu3)
+configuration: --prefix=/usr --extra-version=3ubuntu2 --toolchain=hardened --libdir=/usr/lib/x86_64-linux-gnu --incdir=/usr/include/x86_64-linux-gnu --arch=amd64 --enable-gpl --disable-stripping --disable-pocketsphinx --disable-libcaca --disable-libmfx --disable-omx --enable-gnutls --enable-libaom --enable-libass --enable-libbs2b --enable-libcdio --enable-libcodec2 --enable-libdav1d --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libglslang --enable-libgme --enable-libgsm --enable-libharfbuzz --enable-libmp3lame --enable-libmysofa --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-librubberband --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libtheora --enable-libtwolame --enable-libvidstab --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx265 --enable-libxml2 --enable-libxvid --enable-libzimg --enable-openal --enable-opencl --enable-opengl --disable-sndio --enable-libvpl --enable-libdc1394 --enable-libdrm --enable-libiec61883 --enable-chromaprint --enable-frei0r --enable-ladspa --enable-libbluray --enable-libdvdnav --enable-libdvdread --enable-libjack --enable-libjxl --enable-libpulse --enable-librabbitmq --enable-librist --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libx264 --enable-libzmq --enable-libzvbi --enable-lv2 --enable-sdl2 --enable-libplacebo --enable-librav1e --enable-librsvg --enable-shared
+
+=== ENV/CONFIG FILES (Namen only) ===
+./bot-health.sh
+./current_energy.json
+./dj_controller.py
+./dj-youtube-stream.sh
+./docker-compose.yml
+./download_loop.sh
+./genres.json
+./icecast_server.py
+./liquidsoap.yml
+./logs/bot-decisions.json
+./run_bot.sh
+./storage_lru.sh
+./stream_monitor.sh
+./telegram_bot.py

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Acid Prophet Stream Player</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0a;
+      color: #f0f0f0;
+      font-family: 'Rajdhani', system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .player {
+      background: linear-gradient(135deg, #1a0033, #2d0a4d);
+      border: 2px solid #9D4EDD;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 560px;
+      width: 100%;
+      box-shadow: 0 0 40px #9D4EDD66;
+      text-align: center;
+    }
+    .brand {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      background: linear-gradient(90deg, #9D4EDD, #E76F51);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+    .visualizer {
+      height: 120px;
+      background: #00000022;
+      border: 1px solid #9D4EDD44;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 4px;
+      padding: 10px;
+      overflow: hidden;
+    }
+    .bar {
+      width: 6px;
+      background: linear-gradient(to top, #9D4EDD, #E76F51);
+      border-radius: 3px;
+      transition: height 0.15s ease;
+      min-height: 4px;
+    }
+    .status {
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #ccc;
+    }
+    .status .live-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: #ff0040;
+      border-radius: 50%;
+      margin-right: 6px;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    button {
+      background: linear-gradient(135deg, #9D4EDD, #E76F51);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.05em;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px #9D4EDD66;
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    .info {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="player">
+    <div class="brand">ACID PROPHET</div>
+    <div class="subtitle">24/7 PSYTRANCE STREAM — The Crowd Controls The AI DJ</div>
+
+    <div class="visualizer" id="visualizer"></div>
+
+    <div class="status">
+      <span class="live-dot"></span>
+      <span id="statusText">LIVE — Psytrance/Goa/Progressive</span>
+    </div>
+
+    <button id="playBtn">▶ Play Stream</button>
+
+    <div class="info">
+      <p>Stream: http://100.69.81.38:8000/stream</p>
+      <p>Quality: 320kbps MP3</p>
+    </div>
+  </div>
+
+  <script>
+    const audio = new Audio('http://100.69.81.38:8000/stream');
+    audio.crossOrigin = 'anonymous';
+    const playBtn = document.getElementById('playBtn');
+    const statusText = document.getElementById('statusText');
+    const visualizer = document.getElementById('visualizer');
+
+    // Create fake visualizer bars
+    const barCount = 32;
+    for (let i = 0; i < barCount; i++) {
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.height = '4px';
+      visualizer.appendChild(bar);
+    }
+    const bars = visualizer.querySelectorAll('.bar');
+
+    function animateBars() {
+      bars.forEach(bar => {
+        const h = Math.random() * 80 + 10;
+        bar.style.height = h + 'px';
+      });
+    }
+
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play()
+          .then(() => {
+            playBtn.textContent = '⏸ Pause';
+            statusText.textContent = 'PLAYING — Psytrance/Goa/Progressive';
+            animateBars();
+            const interval = setInterval(() => {
+              if (audio.paused) {
+                clearInterval(interval);
+                return;
+              }
+              animateBars();
+            }, 150);
+          })
+          .catch(err => {
+            statusText.textContent = 'Fehler: ' + err.message;
+            console.error(err);
+          });
+      } else {
+        audio.pause();
+        playBtn.textContent = '▶ Play Stream';
+        statusText.textContent = 'PAUSED';
+        bars.forEach(bar => bar.style.height = '4px');
+      }
+    });
+
+    audio.addEventListener('error', (e) => {
+      statusText.textContent = 'Stream nicht erreichbar';
+      console.error('Audio error', e);
+    });
+
+    audio.addEventListener('playing', () => {
+      statusText.textContent = 'PLAYING — Psytrance/Goa/Progressive';
+    });
+  </script>
+</head>
+<body>
+</body>
+</html>
